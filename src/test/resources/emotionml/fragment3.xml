@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<emotion version="1.0" xmlns="http://www.w3.org/2009/10/emotionml"
+        category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories">
+  <info>bla bla</info>
+  <category name="affectionate"/>
+  <reference uri="http://www.example.com/data/video/v1.avi?t=2,13" role="expressedBy" />
+  <reference uri="http://www.example.com/data/physio/ph7.txt" role="expressedBy"/>
+  <reference uri="http://www.example.com/events/e12.xml" role="triggeredBy"/>
+  <reference uri="http://www.example.com/data/video/v1.avi?t=2,13" media-type="video/mp4"/>
+</emotion>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<emotionml xmlns="http://www.w3.org/2009/10/emotionml" version="1.0">
+  <emotion version="1.0" 
+        category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories"
+        id="e123"
+        start="1268647200000" end="1268647334000">
+    <category name="affectionate"/>
+  </emotion>
+  <emotion version="1.0" xmlns="http://www.w3.org/2009/10/emotionml"
+        category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories"
+        start="1268647200000" duration="130">
+    <category name="affectionate"/>
+  </emotion>
+  <emotion version="1.0" xmlns="http://www.w3.org/2009/10/emotionml"
+        category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories"
+        offset-to-start="-1000" duration="3000" time-ref-uri="#my_session_id" time-ref-anchor-point="end" 
+        expressed-through="">
+    <category name="affectionate"/>
+  </emotion>
+</emotionml>

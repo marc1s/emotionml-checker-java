@@ -1,0 +1,26 @@
+<emotionml xmlns="http://www.w3.org/2009/10/emotionml"
+    xmlns:sensors="http://www.example.com/meta/sensors/"
+    category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories"
+    version="1.0">
+
+  <info>
+    <sensors:sensor id="camera1" confidence="0.9" expressed-through="posture"/>
+    <sensors:sensor id="chair" confidence="0.3" expressed-through="posture"/>
+    ...
+  </info>
+
+  <emotion expressed-through="posture">
+    <info>
+      <sensors:sensor idref="camera1"/>
+    </info>
+    <category name="angry"/>
+  </emotion>
+
+  <emotion expressed-through="posture">
+    <info>
+      <sensors:sensor idref="chair"/>
+    </info>
+    <category name="neutral"/>
+  </emotion>
+
+</emotionml>

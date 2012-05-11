@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<emotionml version="1.0" xmlns="http://www.w3.org/2009/10/emotionml">
+  <info id="bla">bla bla bla</info>
+  <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories">
+    <category name="affectionate"/>
+  </emotion>
+  <vocabulary type="category" id="v1">
+    <item name="bla"/>
+  </vocabulary>
+  <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories">
+    <category name="affectionate"/>
+  </emotion>
+  <vocabulary type="dimension" id="v2">
+    <item name="bla"/>
+  </vocabulary>
+
+</emotionml>

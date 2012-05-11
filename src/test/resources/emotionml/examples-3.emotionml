@@ -1,0 +1,39 @@
+<emotionml version="1.0" xmlns="http://www.w3.org/2009/10/emotionml">
+   
+    <!-- Vocabulary definitions -->
+   
+    <vocabulary type="category" id="big6">
+        <item name="anger"/>
+        <item name="disgust"/>
+        <item name="fear"/>
+        <item name="happiness"/>
+        <item name="sadness"/>
+        <item name="surprise"/>
+    </vocabulary>
+
+    <vocabulary type="dimension" id="fsre-dimensions">
+        <item name="valence"/>
+        <item name="potency"/>
+        <item name="arousal"/>
+        <item name="unpredictability"/>
+    </vocabulary>
+
+    <vocabulary type="action-tendency" id="frijda-subset">
+        <item name="approach"/>
+        <item name="avoidance"/>
+        <item name="rejecting"/>
+    </vocabulary>
+
+    <!-- Emotion elements -->
+   
+    <emotion category-set="#big6" action-tendency-set="#frijda-subset">
+        <category name="fear"/>
+        <action-tendency name="approach" value="0.0"/>
+        <action-tendency name="avoidance" value="0.9"/>
+    </emotion>
+
+    <emotion dimension-set="#fsre-dimensions">
+        <dimension name="arousal" value="0.3"/>
+    </emotion>
+
+</emotionml>

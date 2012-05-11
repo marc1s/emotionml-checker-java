@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<emotion version="1.0" xmlns="http://www.w3.org/2009/10/emotionml"
+        category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories">
+   <category name="affectionate">
+     <trace freq="10Hz" samples="0.1 0.2 1.0"/>
+   </category>
+</emotion>

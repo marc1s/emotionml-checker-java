@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<emotionml version="1.0" xmlns="http://www.w3.org/2009/10/emotionml">
+  <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#big6">
+    <category name="surprise" confidence="0.95"/> 
+  </emotion>
+  <emotion dimension-set="http://www.w3.org/TR/emotion-voc/xml#pad-dimensions">
+    <dimension name="arousal" value="0.8" confidence="0.9"/>
+    <dimension name="pleasure" value="0.6" confidence="0.3"/>
+  </emotion>
+  <emotion dimension-set="http://www.w3.org/TR/emotion-voc/xml#intensity-dimension">
+    <dimension name="intensity" value="0.1" confidence="0.8"/>
+  </emotion>
+  <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories"
+         dimension-set="http://www.w3.org/TR/emotion-voc/xml#intensity-dimension">
+    <category name="bored" confidence="0.1"/>
+    <dimension name="intensity" value="0.1" confidence="0.8"/>
+  </emotion>
+  
+  <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories" 
+         expressed-through="voice">
+    <category name="satisfied"/>
+  </emotion>
+  <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories" 
+         expressed-through="face voice">
+    <category name="satisfied"/>
+  </emotion>
+  
+  
+</emotionml>

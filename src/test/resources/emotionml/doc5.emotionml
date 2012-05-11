@@ -1,0 +1,17 @@
+<emotionml xmlns="http://www.w3.org/2009/10/emotionml"  
+           xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI"
+           version="1.0">
+<info>
+  <imdi:Actors>
+      <imdi:Actor>
+           <imdi:Role>Annotator</imdi:Role>
+           <imdi:Name>John</imdi:Name>
+           <imdi:FullName>John Smith Junior</imdi:FullName>
+           <imdi:Code>JS</imdi:Code>
+           <imdi:FamilySocialRole>Teacher</imdi:FamilySocialRole>
+          ...
+      </imdi:Actor>
+  </imdi:Actors>
+</info>
+ ...
+</emotionml> 

@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.w3.org/2009/10/emotionml"
+    xmlns:emo="http://www.w3.org/2009/10/emotionml"
+    elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+
+  <xs:attributeGroup name="vocabularies-used">
+    <xs:attribute name="category-set" type="xs:anyURI" />
+    <xs:attribute name="dimension-set" type="xs:anyURI" />
+    <xs:attribute name="appraisal-set" type="xs:anyURI" />
+    <xs:attribute name="action-tendency-set" type="xs:anyURI" />
+  </xs:attributeGroup>
+
+
+  <xs:simpleType name="scale-value">
+    <xs:restriction base="xs:float">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="1.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="info" mixed="true">
+	<xs:sequence>
+	  <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+  </xs:complexType>
+  <xs:element name="info" type="emo:info"/>
+
+  <xs:complexType name="reference">
+    <xs:attribute name="uri" type="xs:anyURI"/>
+    <xs:attribute name="role" default="expressedBy">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="expressedBy"/>
+          <xs:enumeration value="experiencedBy"/>
+          <xs:enumeration value="triggeredBy"/>
+          <xs:enumeration value="targetedAt"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="media-type" type="xs:string"/>
+  </xs:complexType>
+
+
+  <xs:complexType name="trace">
+    <xs:attribute name="freq" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\d+(\.\d*)?\s*Hz"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="samples" use="required">
+      <xs:simpleType>
+        <xs:restriction>
+          <xs:simpleType>
+            <xs:list itemType="emo:scale-value"/>
+          </xs:simpleType>
+          <xs:minLength value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  
+  <xs:complexType name="emotion-description">
+    <xs:sequence>
+      <xs:element name="trace" type="emo:trace" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:token" use="required" />
+    <xs:attribute name="value" type="emo:scale-value" use="optional" />
+    <xs:attribute name="confidence" type="emo:scale-value" use="optional" />
+  </xs:complexType>
+
+  <xs:element name="category" type="emo:emotion-description"/>
+  <xs:element name="dimension" type="emo:emotion-description"/>
+  <xs:element name="appraisal" type="emo:emotion-description"/>
+  <xs:element name="action-tendency" type="emo:emotion-description"/>
+
+  <xs:group name="emotion-description">
+    <xs:choice>
+      <xs:element ref="emo:category"/>
+      <xs:element ref="emo:dimension"/>
+      <xs:element ref="emo:appraisal"/>
+      <xs:element ref="emo:action-tendency"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="emotion" mixed="true">
+    <xs:sequence>
+      <xs:element ref="emo:info" minOccurs="0"/>
+      <xs:group ref="emo:emotion-description" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="reference" type="emo:reference" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="version" default="1.0" use="optional"/>
+    <xs:attributeGroup ref="emo:vocabularies-used"/>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+    <xs:attribute name="start" type="xs:nonNegativeInteger" use="optional"/>
+    <xs:attribute name="end" type="xs:nonNegativeInteger" use="optional"/>
+    <xs:attribute name="duration" type="xs:nonNegativeInteger" default="0" use="optional"/>
+    <xs:attribute name="time-ref-uri" type="xs:anyURI" use="optional"/>
+    <xs:attribute name="time-ref-anchor-point" default="start" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="start"/>
+          <xs:enumeration value="end"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="offset-to-start" type="xs:integer" default="0" use="optional"/>
+    <xs:attribute name="expressed-through" type="xs:NMTOKENS" use="optional"/>
+  </xs:complexType>
+  
+
+  <xs:element name="emotion" type="emo:emotion">
+    <xs:unique name="unique-category">
+      <xs:selector xpath="emo:category"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="unique-dimension">
+      <xs:selector xpath="emo:dimension"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="unique-appraisal">
+      <xs:selector xpath="emo:appraisal"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="unique-action-tendency">
+      <xs:selector xpath="emo:action-tendency"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+  
+  </xs:element>
+  
+  
+  <xs:complexType name="item">
+    <xs:sequence>
+      <xs:element ref="emo:info" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:NMTOKEN" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="vocabulary">
+    <xs:sequence>
+      <xs:element ref="emo:info" minOccurs="0"/>
+      <xs:element name="item" type="emo:item" maxOccurs="unbounded"/>
+    </xs:sequence>
+    
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="category"/>
+          <xs:enumeration value="dimension"/>
+          <xs:enumeration value="appraisal"/>
+          <xs:enumeration value="action-tendency"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+  </xs:complexType>
+  <xs:element name="vocabulary" type="emo:vocabulary">
+    <xs:unique name="unique-item">
+      <xs:selector xpath="emo:item"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+  </xs:element>
+
+
+  
+  
+</xs:schema>

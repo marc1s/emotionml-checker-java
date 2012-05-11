@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.w3.org/2009/10/emotionml"
+    xmlns:emo="http://www.w3.org/2009/10/emotionml"
+    elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+  <xs:include schemaLocation="emotionml-fragments.xsd" />
+  
+  <xs:complexType name="emotionml" mixed="true">
+    <xs:sequence>
+      <xs:element ref="emo:info" minOccurs="0" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="emo:emotion" />
+        <xs:element ref="emo:vocabulary" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="version" fixed="1.0" use="required"/>
+    <xs:attributeGroup ref="emo:vocabularies-used"/>
+  </xs:complexType>
+  
+  <xs:element name="emotionml" type="emo:emotionml" />
+
+</xs:schema>

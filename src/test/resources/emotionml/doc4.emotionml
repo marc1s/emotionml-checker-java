@@ -1,0 +1,19 @@
+<emotionml xmlns="http://www.w3.org/2009/10/emotionml"
+        xmlns:classifiers="http://www.example.com/meta/classify/"
+        xmlns:origin="http://www.example.com/meta/local/"
+        category-set="http://www.w3.org/TR/emotion-voc/xml#big6"
+        version="1.0">
+    <info>
+        <classifiers:classifier classifiers:name="GMM"/>
+    </info>
+
+    <emotion>
+        <info><origin:localization value="bavarian"/></info>
+        <category name="happiness"/>
+    </emotion>
+
+    <emotion>
+        <info><origin:localization value="swabian"/></info>
+        <category name="sadness"/>
+    </emotion>
+</emotionml>

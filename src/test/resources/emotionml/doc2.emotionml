@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<emotionml version="1.0" xmlns="http://www.w3.org/2009/10/emotionml"
+    category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories"
+    dimension-set="http://www.w3.org/TR/emotion-voc/xml#pad-dimensions"
+    appraisal-set="http://www.w3.org/TR/emotion-voc/xml#scherer-appraisals"
+    action-tendency-set="http://www.w3.org/TR/emotion-voc/xml#frijda-action-tendencies">
+ ...
+</emotionml>
