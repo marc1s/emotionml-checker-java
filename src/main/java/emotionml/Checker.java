@@ -58,18 +58,19 @@ public class Checker {
 
 	private void validateVocabularySets(Element element) throws NotValidEmotionmlException {
 		assert element != null;
-		String attName = "category-set";
-		EmotionVocabulary.Type expectedType = EmotionVocabulary.Type.category;
-		if (element.hasAttribute(attName)) {
-			String value = element.getAttribute(attName);
-			EmotionVocabulary voc;
-			try {
-				voc = EmotionVocabulary.get(value);
-			} catch (NoSuchVocabularyException e) {
-				throw new NotValidEmotionmlException("Cannot get vocabulary definition from "+value, e);
-			}
-			if (voc.getType() != expectedType) {
-				throw new NotValidEmotionmlException("The vocabulary referred to in '"+attName+"' should be of type '"+expectedType+"' but is of type '"+voc.getType()+"'");
+		for (String attName : EmotionML.vocabularyAttributeTypes.keySet()) {
+			EmotionVocabulary.Type expectedType = EmotionML.vocabularyAttributeTypes.get(attName);
+			if (element.hasAttribute(attName)) {
+				String value = element.getAttribute(attName);
+				EmotionVocabulary voc;
+				try {
+					voc = EmotionVocabulary.get(value);
+				} catch (NoSuchVocabularyException e) {
+					throw new NotValidEmotionmlException("Cannot get vocabulary definition from "+value, e);
+				}
+				if (voc.getType() != expectedType) {
+					throw new NotValidEmotionmlException("The vocabulary referred to in '"+attName+"' should be of type '"+expectedType+"' but is of type '"+voc.getType()+"'");
+				}
 			}
 		}
 	}
