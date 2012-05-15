@@ -1,6 +1,5 @@
 package emotionml;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.XMLConstants;
@@ -11,10 +10,13 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import emotionml.exceptions.ConfigurationException;
+import emotionml.exceptions.NoSuchVocabularyException;
+import emotionml.exceptions.NotValidEmotionmlException;
 
 public class Checker {
 	private DocumentBuilderFactory factory;
@@ -38,10 +40,47 @@ public class Checker {
 		} 
 	}
 
-	public Document parse(InputStream emotionmlStream) throws SAXException, IOException {
-		return builder.parse(emotionmlStream);
+	public Document parse(InputStream emotionmlStream) throws NotValidEmotionmlException {
+		Document doc = null;
+		try {
+			doc = builder.parse(emotionmlStream);
+		} catch (Exception e) {
+			throw new NotValidEmotionmlException("Cannot parse EmotionML", e);
+		}
+		validate(doc);
+		return doc;
 	}
 	
+	public void validate(Document emotionmlDocument) throws NotValidEmotionmlException {
+		validateRootElement(emotionmlDocument);
+		validateVocabularySets(emotionmlDocument.getDocumentElement());
+	}
+
+	private void validateVocabularySets(Element element) throws NotValidEmotionmlException {
+		assert element != null;
+		String attName = "category-set";
+		EmotionVocabulary.Type expectedType = EmotionVocabulary.Type.category;
+		if (element.hasAttribute(attName)) {
+			String value = element.getAttribute(attName);
+			EmotionVocabulary voc;
+			try {
+				voc = EmotionVocabulary.get(value);
+			} catch (NoSuchVocabularyException e) {
+				throw new NotValidEmotionmlException("Cannot get vocabulary definition from "+value, e);
+			}
+			if (voc.getType() != expectedType) {
+				throw new NotValidEmotionmlException("The vocabulary referred to in '"+attName+"' should be of type '"+expectedType+"' but is of type '"+voc.getType()+"'");
+			}
+		}
+	}
+
+	private void validateRootElement(Document emotionmlDocument) throws NotValidEmotionmlException {
+		if (emotionmlDocument == null || emotionmlDocument.getDocumentElement() == null
+				|| !"emotionml".equals(emotionmlDocument.getDocumentElement().getLocalName())) {
+			throw new NotValidEmotionmlException("The root element of standalone EmotionML documents MUST be <emotionml>.");
+		}
+	}
+
 	public Schema getEmotionmlSchema() {
 		return emotionmlSchema;
 	}
