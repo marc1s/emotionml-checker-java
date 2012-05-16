@@ -6,11 +6,15 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -47,13 +51,46 @@ public class Checker {
 		} catch (Exception e) {
 			throw new NotValidEmotionmlException("Cannot parse EmotionML", e);
 		}
-		validate(doc);
+		validateStandaloneManually(doc);
 		return doc;
 	}
 	
-	public void validate(Document emotionmlDocument) throws NotValidEmotionmlException {
+	public void validate(Document emotionml) throws NotValidEmotionmlException {
+		try {
+			emotionmlSchema.newValidator().validate(new DOMSource(emotionml));
+		} catch (Exception e) {
+			throw new NotValidEmotionmlException("Could not schema-validate source", e);
+		}
+		validateStandaloneManually(emotionml);
+	}
+	
+	public void validateFragment(DocumentFragment emotionmlFragment) throws NotValidEmotionmlException {
+		try {
+			emotionmlSchema.newValidator().validate(new DOMSource(emotionmlFragment));
+		} catch (Exception e) {
+			throw new NotValidEmotionmlException("Could not schema-validate source", e);
+		}
+		validateFragmentManually(emotionmlFragment);
+		
+	}
+	
+	public void validateStandaloneManually(Document emotionmlDocument) throws NotValidEmotionmlException {
 		validateRootElement(emotionmlDocument);
 		validateVocabularySets(emotionmlDocument.getDocumentElement());
+	}
+	
+	public void validateFragmentManually(DocumentFragment emotionmlFragment) throws NotValidEmotionmlException {
+		NodeList kids = emotionmlFragment.getChildNodes();
+		for (int i=0, len=kids.getLength(); i<len; i++) {
+			Node n = kids.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
+			}
+			Element e = (Element) n;
+			if ("emotion".equals(e.getTagName()) && EmotionML.namespaceURI.equals(e.getNamespaceURI())) {
+				validateVocabularySets(e);
+			}
+		}
 	}
 
 	private void validateVocabularySets(Element element) throws NotValidEmotionmlException {
