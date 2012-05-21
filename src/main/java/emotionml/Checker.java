@@ -76,10 +76,16 @@ public class Checker {
 	
 	public void validateStandaloneManually(Document emotionmlDocument) throws NotValidEmotionmlException {
 		validateRootElement(emotionmlDocument);
-		validateVocabularySets(emotionmlDocument.getDocumentElement());
+		Element emotionmlElement = emotionmlDocument.getDocumentElement();
+		validateVocabularySets(emotionmlElement);
+		validateManually(emotionmlElement);
+	}
+
+	public void validateFragmentManually(DocumentFragment emotionmlFragment) throws NotValidEmotionmlException {
+		validateManually(emotionmlFragment);
 	}
 	
-	public void validateFragmentManually(DocumentFragment emotionmlFragment) throws NotValidEmotionmlException {
+	private void validateManually(Node emotionmlFragment) throws NotValidEmotionmlException {
 		NodeList kids = emotionmlFragment.getChildNodes();
 		for (int i=0, len=kids.getLength(); i<len; i++) {
 			Node n = kids.item(i);
@@ -89,7 +95,61 @@ public class Checker {
 			Element e = (Element) n;
 			if ("emotion".equals(e.getTagName()) && EmotionML.namespaceURI.equals(e.getNamespaceURI())) {
 				validateVocabularySets(e);
+				validateVersion(e);
+				validateDescriptors(e);
 			}
+		}
+	}
+
+
+	private void validateDescriptors(Element emotion) throws NotValidEmotionmlException {
+		assert emotion.getLocalName().equals("emotion");
+		NodeList children = emotion.getChildNodes();
+		for (int i=0, len=children.getLength(); i<len; i++) {
+			Node n = children.item(i);
+			if (n.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
+			}
+			Element c = (Element) n;
+			String childLocalName = c.getLocalName();
+			if ("category".equals(childLocalName)) {
+				validateCategory(c);
+			}
+		}
+	}
+
+	private void validateCategory(Element category) throws NotValidEmotionmlException {
+		assert category.getLocalName().equals("category");
+		Element emotion = (Element) category.getParentNode();
+		String declaredVocabularyUri = emotion.getAttribute("category-set");
+		if ("".equals(declaredVocabularyUri)) {
+			Element root = category.getOwnerDocument().getDocumentElement();
+			if (EmotionML.namespaceURI.equals(root.getNamespaceURI())
+					&& "emotionml".equals(root.getLocalName())) {
+				declaredVocabularyUri = root.getAttribute("category-set");
+			}
+		}
+		if ("".equals(declaredVocabularyUri)) {
+			throw new NotValidEmotionmlException("<category> element used without declaring a category vocabulary through the 'category-set' attribute");
+		}
+		EmotionVocabulary declaredVocabulary;
+		try {
+			declaredVocabulary = EmotionVocabulary.get(declaredVocabularyUri);
+		} catch (NoSuchVocabularyException e) {
+			throw new NotValidEmotionmlException("Cannot get vocabulary for uri '"+declaredVocabularyUri+"'", e);
+		}
+		String name = category.getAttribute("name");
+		if (!declaredVocabulary.getItems().contains(name)) {
+			throw new NotValidEmotionmlException("The name '"+name+"' of element <category> is not contained in the declared vocabulary '"+declaredVocabularyUri+"'");
+		}
+	}
+
+	private void validateVersion(Element emotion) throws NotValidEmotionmlException {
+		assert emotion.getLocalName().equals("emotion");
+		if (!emotion.hasAttribute("version")) return;
+		String version = emotion.getAttribute("version");
+		if (!version.equals("1.0")) {
+			throw new NotValidEmotionmlException("Version attribute of <emotion> should be '1.0' but is '"+version+"'");
 		}
 	}
 

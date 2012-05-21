@@ -121,4 +121,41 @@ public class ManualValidationTest {
 		// 170		[2.1.2]	Y	Y	SUB CONSTRAINT: The "action-tendency-set" attribute of <emotion>, if present, MUST refer to the ID of a <vocabulary> element with type="action-tendency".
 		new Checker().validateFragment(parseFragment(emotionStream("action-tendency-set=\"http://www.w3.org/TR/emotion-voc/xml#frijda-action-tendencies\"", "<action-tendency name=\"approach\"/>")));
 	}
+
+	@Test(expected=NotValidEmotionmlException.class)
+	public void assertion172() throws Exception {
+		// 172	version	[2.1.2]	Y	N	The "version" attribute of <emotion>, if present, MUST have the value "1.0".
+		new Checker().validateFragment(parseFragment(emotionStream("version=\"1.1\" category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category name=\"anger\"/>")));
+	}
+	
+	@Test
+	public void assertion210emotionml() throws Exception {
+		// 210	category	[2.2.1]	Y	N	If the <category> element is used, a category vocabulary MUST be declared using a "category-set" attribute on either the enclosing <emotion> element or the root element <emotionml>.
+		new Checker().parse(emotionmlStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<emotion><category name=\"anger\"/></emotion>"));
+	}
+
+	@Test
+	public void assertion210emotion() throws Exception {
+		// 210	category	[2.2.1]	Y	N	If the <category> element is used, a category vocabulary MUST be declared using a "category-set" attribute on either the enclosing <emotion> element or the root element <emotionml>.
+		new Checker().parse(emotionmlStream("", "<emotion category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"><category name=\"anger\"/></emotion>"));
+	}
+
+	@Test(expected=NotValidEmotionmlException.class)
+	public void assertion210none() throws Exception {
+		// 210	category	[2.2.1]	Y	N	If the <category> element is used, a category vocabulary MUST be declared using a "category-set" attribute on either the enclosing <emotion> element or the root element <emotionml>.
+		new Checker().parse(emotionmlStream("", "<emotion><category name=\"anger\"/></emotion>"));
+	}
+
+	@Test
+	public void assertion212ok() throws Exception {
+		// 212		[2.2.1]	Y	Y	SUB CONSTRAINT: The value of the "name" attribute of the <category> element MUST be contained in the declared category vocabulary. If both the <emotionml> and the <emotion> element has a "category-set" attribute, then the <emotion> element's attribute defines the declared category vocabulary.
+		new Checker().validateFragment(parseFragment(emotionStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category name=\"anger\"/>")));
+	}
+	
+	@Test(expected=NotValidEmotionmlException.class)
+	public void assertion212fail() throws Exception {
+		// 212		[2.2.1]	Y	Y	SUB CONSTRAINT: The value of the "name" attribute of the <category> element MUST be contained in the declared category vocabulary. If both the <emotionml> and the <emotion> element has a "category-set" attribute, then the <emotion> element's attribute defines the declared category vocabulary.
+		new Checker().validateFragment(parseFragment(emotionStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category name=\"somethingelse\"/>")));
+	}	
+	
 }

@@ -20,7 +20,7 @@
     <info>
       <sensors:sensor idref="chair"/>
     </info>
-    <category name="neutral"/>
+    <category name="disappointed"/>
   </emotion>
 
 </emotionml>

@@ -37,6 +37,10 @@ public class EmotionVocabulary {
 	private static Map<String, String> setupLocalVocabularies() {
 		Map<String, String> vocs = new HashMap<String, String>();
 		vocs.put("http://www.w3.org/TR/emotion-voc/xml", "emotion-voc.emotionml");
+		vocs.put("http://www.example.com/custom/category/interpersonal-stances.xml", "examples/interpersonal.emotionml");
+		vocs.put("http://www.example.com/custom/dimension/friendliness.xml", "examples/friendliness.emotionml");
+		vocs.put("http://www.example.com/custom/appraisal/likelihood.xml", "examples/likelihood.emotionml");
+		vocs.put("http://www.example.com/custom/action/robot.xml", "examples/robot.emotionml");
 		return Collections.unmodifiableMap(vocs);
 	}
 	

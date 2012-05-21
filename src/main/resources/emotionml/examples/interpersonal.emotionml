@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<emotionml version="1.0" xmlns="http://www.w3.org/2009/10/emotionml">
+  <vocabulary type="category" id="voc">
+    <item name="distant"/>
+  </vocabulary>	
+</emotionml>

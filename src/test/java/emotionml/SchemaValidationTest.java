@@ -191,6 +191,61 @@ public class SchemaValidationTest {
 		new Checker().validateFragment(parseFragment(stringAsStream("<emotion version=\"1.0\" xmlns=\"http://www.w3.org/2009/10/emotionml\" action-tendency-set=\";:\"/>")));
 	}
 
+	
+	@Test
+	public void assertion171() throws Exception {
+		// 171	version	[2.1.2]	N	N	The <emotion> element MAY have an attribute "version".
+		new Checker().validateFragment(parseFragment(emotionStream("version=\"1.0\" category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category name=\"anger\"/>")));
+	}
+
+	@Test
+	public void assertion173() throws Exception {
+		// 173	id	[2.1.2]	N	N	The <emotion> element MAY contain an attribute "id".
+		new Checker().validateFragment(parseFragment(emotionStream("id=\"myid\" category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category name=\"anger\"/>")));
+	}
+
+	@Test(expected=NotValidEmotionmlException.class)
+	public void assertion174() throws Exception {
+		// 174	id	[2.1.2]	Y	N	The "id" attribute of <emotion>, if present, MUST be of type xsd:ID.
+		new Checker().validateFragment(parseFragment(emotionStream("id=\"123\"", "<category name=\"bla\"/>")));
+	}
+				
+	@Test
+	public void assertions172To180() throws Exception {
+		// 175	start	[2.1.2]	N	N	The <emotion> element MAY have an attribute "start".			
+		// 176	end	[2.1.2]	N	N	The <emotion> element MAY have an attribute "end".			
+		// 177	duration	[2.1.2]	N	N	The <emotion> element MAY have an attribute "duration".			
+		// 178	time-ref-uri	[2.1.2]	N	N	The <emotion> element MAY have an attribute "time-ref-uri".			
+		// 179	time-ref-anchor-point	[2.1.2]	N	N	The <emotion> element MAY have an attribute "time-ref-anchor-point".			
+		// 180	offset-to-start	[2.1.2]	N	N	The <emotion> element MAY have an attribute "offset-to-start".
+		new Checker().parse(resourceAsStream("doc7.emotionml"));
+	}
+	
+	@Test
+	public void assertion181() throws Exception {
+		// 155	info	[2.1.2]	N	N	The <emotion> element MAY contain a single <info> element.
+		new Checker().parse(resourceAsStream("doc6.emotionml"));
+	}
+
+	@Test
+	public void assertion182() throws Exception {
+		// 182	emotion	[2.1.2]	N	N	The <emotion> element MAY contain arbitrary plain text.
+		new Checker().validateFragment(parseFragment(emotionStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "arbitrary <category name=\"anger\"/> text")));
+	}
+	
+	@Test(expected=NotValidEmotionmlException.class)
+	public void assertion211() throws Exception {
+		// 211	name	[2.2.1]	Y	N	A category element MUST contain a "name" attribute.
+		new Checker().validateFragment(parseFragment(emotionStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category/>")));
+	}	
+	
+	@Test(expected=NotValidEmotionmlException.class)
+	public void assertion213() throws Exception {
+		// 213	name	[2.2.1]	Y	N	For any given category name in the set, zero or one occurrence is allowed within an <emotion> element, i.e. a category with name "x" MUST NOT appear twice in one <emotion> element.
+		new Checker().validateFragment(parseFragment(emotionStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\"", "<category name=\"anger\"/> <category name=\"anger\"/>")));
+	}
+	
+
 }
 
 

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <emotionml version="1.0" xmlns="http://www.w3.org/2009/10/emotionml">
   <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#everyday-categories">
-    <category name="satisfaction"/>
+    <category name="satisfied"/>
   </emotion>
-  <emotion category-set="http://www.example.com/custom/category/interpersonal-stances.xml">
+  <emotion category-set="http://www.example.com/custom/category/interpersonal-stances.xml#voc">
     <category name="distant"/>
   </emotion>
   <emotion category-set="http://www.w3.org/TR/emotion-voc/xml#big6">
@@ -17,7 +17,7 @@
     <dimension name="pleasure" value="0.9"/><!-- very high positive valence -->
     <dimension name="dominance" value="0.8"/><!-- relatively high potency    -->
   </emotion>
-  <emotion dimension-set="http://www.example.com/custom/dimension/friendliness.xml">
+  <emotion dimension-set="http://www.example.com/custom/dimension/friendliness.xml#voc">
     <dimension name="friendliness" value="0.2"/><!-- a pretty unfriendly person -->
   </emotion>
   <emotion dimension-set="http://www.w3.org/TR/emotion-voc/xml#intensity-dimension">
@@ -28,7 +28,7 @@
     <appraisal name="suddenness" value="0.8"/>
     <appraisal name="intrinsic-pleasantness" value="0.2"/>
   </emotion>
-  <emotion appraisal-set="http://www.example.com/custom/appraisal/likelihood.xml">
+  <emotion appraisal-set="http://www.example.com/custom/appraisal/likelihood.xml#voc">
     <appraisal name="likelihood" value="0.8"/><!-- a very predictable event -->
   </emotion>
   
@@ -38,7 +38,7 @@
     <action-tendency name="attending" value="0.7"/>  <!-- pay attention -->
     <action-tendency name="dominating" value="0.7"/> <!-- be assertive -->
   </emotion>
-  <emotion action-tendency-set="http://www.example.com/custom/action/robot.xml">
+  <emotion action-tendency-set="http://www.example.com/custom/action/robot.xml#voc">
     <action-tendency name="charge-battery" value="0.9"/> <!-- need to charge battery soon -->
     <action-tendency name="pickup-boxes" value="0.3"/>   <!-- feeling tired, avoid work -->
   </emotion>
