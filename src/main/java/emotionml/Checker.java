@@ -136,7 +136,11 @@ public class Checker {
 		}
 		EmotionVocabulary declaredVocabulary;
 		try {
-			declaredVocabulary = EmotionVocabulary.get(declaredVocabularyUri);
+			if (isLocallyDefined(declaredVocabularyUri)) {
+				declaredVocabulary = EmotionVocabulary.get(desc.getOwnerDocument(), getIdFromLocalVocabularyUri(declaredVocabularyUri));
+			} else {
+				declaredVocabulary = EmotionVocabulary.get(declaredVocabularyUri);
+			}
 		} catch (NoSuchVocabularyException e) {
 			throw new NotValidEmotionmlException("Cannot get vocabulary for uri '"+declaredVocabularyUri+"'", e);
 		}
@@ -168,18 +172,31 @@ public class Checker {
 		for (String attName : EmotionML.vocabularyAttributeTypes.keySet()) {
 			EmotionVocabulary.Type expectedType = EmotionML.vocabularyAttributeTypes.get(attName);
 			if (element.hasAttribute(attName)) {
-				String value = element.getAttribute(attName);
+				String vocabularyUri = element.getAttribute(attName);
 				EmotionVocabulary voc;
 				try {
-					voc = EmotionVocabulary.get(value);
+					if (isLocallyDefined(vocabularyUri)) {
+						voc = EmotionVocabulary.get(element.getOwnerDocument(), getIdFromLocalVocabularyUri(vocabularyUri));
+					} else {
+						voc = EmotionVocabulary.get(vocabularyUri);
+					}
 				} catch (NoSuchVocabularyException e) {
-					throw new NotValidEmotionmlException("Cannot get vocabulary definition from "+value, e);
+					throw new NotValidEmotionmlException("Cannot get vocabulary definition from "+vocabularyUri, e);
 				}
 				if (voc.getType() != expectedType) {
 					throw new NotValidEmotionmlException("The vocabulary referred to in '"+attName+"' should be of type '"+expectedType+"' but is of type '"+voc.getType()+"'");
 				}
 			}
 		}
+	}
+
+	private String getIdFromLocalVocabularyUri(String vocabularyUri) {
+		assert vocabularyUri.startsWith("#");
+		return vocabularyUri.substring(1);
+	}
+
+	private boolean isLocallyDefined(String vocabularyUri) {
+		return vocabularyUri.startsWith("#");
 	}
 
 	private void validateRootElement(Document emotionmlDocument) throws NotValidEmotionmlException {

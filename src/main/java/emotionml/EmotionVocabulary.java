@@ -53,6 +53,11 @@ public class EmotionVocabulary {
 		return new EmotionVocabulary(vocabularyURL, true);
 	}
 	
+	public static EmotionVocabulary get(Document ownerDocument,	String vocabularyId) throws NoSuchVocabularyException {
+		return new EmotionVocabulary(ownerDocument, vocabularyId);
+	}
+
+	
 	///////////////////////////// One EmotionVocabulary instance //////////////////////////////////
 	
 	private Type type;
@@ -69,6 +74,23 @@ public class EmotionVocabulary {
 	private EmotionVocabulary(String vocabularyURL, boolean useLocalIfPossible) throws NoSuchVocabularyException {
 		Element voc = getVocabularyDOM(vocabularyURL, useLocalIfPossible);
 		initFromDOM(voc);
+	}
+	
+	private EmotionVocabulary(Document doc, String vocabularyId) throws NoSuchVocabularyException {
+		Element voc = getVocabularyElement(doc, vocabularyId);
+		initFromDOM(voc);
+	}
+
+	private Element getVocabularyElement(Document doc, String vocabularyId)
+			throws NoSuchVocabularyException {
+		Element voc = doc.getElementById(vocabularyId);
+		if (voc == null) {
+			throw new NoSuchVocabularyException("Local document does not contain a vocabulary with id '"+vocabularyId+"'");
+		}
+		if (!EmotionML.namespaceURI.equals(voc.getNamespaceURI()) || !"vocabulary".equals(voc.getLocalName())) {
+			throw new NoSuchVocabularyException("Element in local document with id '"+vocabularyId+"' is not an EmotionML vocabulary element");
+		}
+		return voc;
 	}
 
 	private void initFromDOM(Element voc) throws NoSuchVocabularyException {
@@ -105,11 +127,7 @@ public class EmotionVocabulary {
 		String baseURL = extractBaseURL(vocabularyURL);
 		String vocabularyID = extractVocabularyID(vocabularyURL);
 		Document doc = parseVocabularyDocument(baseURL, useLocalIfPossible);
-		Element voc = doc.getElementById(vocabularyID);
-		if (voc == null) {
-			throw new NoSuchVocabularyException("Document at "+baseURL+" has no element with ID '"+vocabularyID+"'");
-		}
-		return voc;
+		return getVocabularyElement(doc, vocabularyID);
 	}
 
 	private int extractHashPosition(String vocabularyURL) throws NoSuchVocabularyException {
@@ -156,6 +174,7 @@ public class EmotionVocabulary {
 	public Set<String> getItems() {
 		return items;
 	}
+
 	
 
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import static emotionml.TestUtil.resourceAsStream;
 import org.junit.Test;
 
 import emotionml.exceptions.NoSuchVocabularyException;
@@ -22,5 +23,10 @@ public class VocabularyTest {
 		assertEquals(EmotionVocabulary.Type.category, big6.getType());
 		assertEquals(6, big6.getItems().size());
 		assertTrue(big6.getItems().contains("anger"));
+	}
+	
+	@Test
+	public void canDefineVocabularyInSameDocument() throws Exception {
+		new Checker().parse(resourceAsStream("examples-3.emotionml"));
 	}
 }
