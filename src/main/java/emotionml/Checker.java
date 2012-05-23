@@ -74,14 +74,14 @@ public class Checker {
 		
 	}
 	
-	public void validateStandaloneManually(Document emotionmlDocument) throws NotValidEmotionmlException {
+	private void validateStandaloneManually(Document emotionmlDocument) throws NotValidEmotionmlException {
 		validateRootElement(emotionmlDocument);
 		Element emotionmlElement = emotionmlDocument.getDocumentElement();
 		validateVocabularySets(emotionmlElement);
 		validateManually(emotionmlElement);
 	}
 
-	public void validateFragmentManually(DocumentFragment emotionmlFragment) throws NotValidEmotionmlException {
+	private void validateFragmentManually(DocumentFragment emotionmlFragment) throws NotValidEmotionmlException {
 		validateManually(emotionmlFragment);
 	}
 	
