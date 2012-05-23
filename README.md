@@ -5,7 +5,8 @@ emotionml-checker-java
 
 A generic implementation of EmotionML checks, in Java.
 
-= Command line usage =
+Command line usage
+------------------
 
 The EmotionML checker can be used to verify the validity of a set of EmotionML files as follows:
 
@@ -15,27 +16,29 @@ where `file.emotionml` is an XML file containing the EmotionML document to be va
 
 The tool will print for each file either an "ok" or a validation error message.
 
-= API usage =
+API usage
+---------
 
-Key APIs to use from Java code:
+Key APIs to use from Java code are the following.
 
-* to verify that a given XML document is valid EmotionML:
+To verify that a given XML document is valid EmotionML:
 
-    new Checker().parse(InputStream)
-    new Checker().validate(Document)
-    new Checker().validateFragment(DocumentFragment)
+      new Checker().parse(InputStream)
+      new Checker().validate(Document)
+      new Checker().validateFragment(DocumentFragment)
     
-* to obtain a certain Emotion Vocabulary:
+To obtain a certain Emotion Vocabulary:
 
     EmotionVocabulary.get(String vocabularyUriWithId)
 
-* to inquire about properties of an Emotion Vocabulary:
+To inquire about properties of an Emotion Vocabulary:
 
     vocabulary.getType()
     vocabulary.getItems()    
 
 
-= License =
+License
+-------
 
 This software is placed in the public domain as defined by the CC0 license, see
 http://creativecommons.org/publicdomain/zero/1.0/
