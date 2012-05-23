@@ -29,7 +29,7 @@
   <xs:element name="info" type="emo:info"/>
 
   <xs:complexType name="reference">
-    <xs:attribute name="uri" type="xs:anyURI"/>
+    <xs:attribute name="uri" type="xs:anyURI" use="required"/>
     <xs:attribute name="role" default="expressedBy">
       <xs:simpleType>
         <xs:restriction base="xs:NMTOKEN">

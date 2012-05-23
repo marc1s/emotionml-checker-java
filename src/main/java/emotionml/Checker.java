@@ -112,25 +112,27 @@ public class Checker {
 			}
 			Element c = (Element) n;
 			String childLocalName = c.getLocalName();
-			if ("category".equals(childLocalName)) {
-				validateCategory(c);
+			if (EmotionML.descriptionTags.contains(childLocalName)) {
+				validateDescription(c);
 			}
 		}
 	}
 
-	private void validateCategory(Element category) throws NotValidEmotionmlException {
-		assert category.getLocalName().equals("category");
-		Element emotion = (Element) category.getParentNode();
-		String declaredVocabularyUri = emotion.getAttribute("category-set");
+	private void validateDescription(Element desc) throws NotValidEmotionmlException {
+		String descType = desc.getLocalName();
+		assert EmotionML.descriptionTags.contains(descType);
+		String vocabularyAttribute = descType+"-set";
+		Element emotion = (Element) desc.getParentNode();
+		String declaredVocabularyUri = emotion.getAttribute(vocabularyAttribute);
 		if ("".equals(declaredVocabularyUri)) {
-			Element root = category.getOwnerDocument().getDocumentElement();
+			Element root = desc.getOwnerDocument().getDocumentElement();
 			if (EmotionML.namespaceURI.equals(root.getNamespaceURI())
 					&& "emotionml".equals(root.getLocalName())) {
-				declaredVocabularyUri = root.getAttribute("category-set");
+				declaredVocabularyUri = root.getAttribute(vocabularyAttribute);
 			}
 		}
 		if ("".equals(declaredVocabularyUri)) {
-			throw new NotValidEmotionmlException("<category> element used without declaring a category vocabulary through the 'category-set' attribute");
+			throw new NotValidEmotionmlException("<"+descType+"> element used without declaring a "+descType+" vocabulary through the '"+vocabularyAttribute+"' attribute");
 		}
 		EmotionVocabulary declaredVocabulary;
 		try {
@@ -138,9 +140,17 @@ public class Checker {
 		} catch (NoSuchVocabularyException e) {
 			throw new NotValidEmotionmlException("Cannot get vocabulary for uri '"+declaredVocabularyUri+"'", e);
 		}
-		String name = category.getAttribute("name");
+		String name = desc.getAttribute("name");
 		if (!declaredVocabulary.getItems().contains(name)) {
-			throw new NotValidEmotionmlException("The name '"+name+"' of element <category> is not contained in the declared vocabulary '"+declaredVocabularyUri+"'");
+			throw new NotValidEmotionmlException("The name '"+name+"' of element <"+descType+"> is not contained in the declared vocabulary '"+declaredVocabularyUri+"'");
+		}
+		boolean hasTraceChild = desc.getElementsByTagNameNS(EmotionML.namespaceURI, "trace").getLength() > 0;
+		boolean hasValueAttribute = desc.hasAttribute("value");
+		if (hasTraceChild && hasValueAttribute) {
+			throw new NotValidEmotionmlException("Either a 'value' attribute or a <trace> child may be used, but not both");
+		}
+		if ("dimension".equals(descType) && !(hasTraceChild || hasValueAttribute)) {
+			throw new NotValidEmotionmlException("<dimension> requires either a 'value' attribute or a <trace> child.");
 		}
 	}
 

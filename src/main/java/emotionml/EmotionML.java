@@ -1,8 +1,11 @@
 package emotionml;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import emotionml.EmotionVocabulary.Type;
 
@@ -23,4 +26,18 @@ public class EmotionML {
 		att2type.put("action-tendency-set", Type.actionTendency);
 		return Collections.unmodifiableMap(att2type);
 	}
+	
+	/**
+	 * Convenience set listing the four types of emotion description tags:
+	 * category, dimension, appraisal, and action-tendency.
+	 */
+	public static final Set<String> descriptionTags = fillDescriptionTags();
+
+	private static Set<String> fillDescriptionTags() {
+		Set<String> s = new HashSet<String>(Arrays.asList(
+				"category", "dimension", "appraisal", "action-tendency"
+		));
+		return Collections.unmodifiableSet(s);
+	}
+	
 }

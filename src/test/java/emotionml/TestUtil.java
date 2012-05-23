@@ -28,6 +28,10 @@ public class TestUtil {
 		return stringAsStream(String.format(emotion, attributes, content));
 	}
 	
+	public static InputStream validEmotionStream(String extraAttributes, String extraContent) {
+		return emotionStream("category-set=\"http://www.w3.org/TR/emotion-voc/xml#big6\" "+extraAttributes, "<category name=\"anger\"/>"+extraContent);
+	}
+	
 	
 	public static Document parse(InputStream in) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
