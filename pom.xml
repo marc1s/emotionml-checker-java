@@ -29,6 +29,13 @@
 		<url>https://github.com/marc1s/emotionml-checker-java/issues</url>
 	</issueManagement>
 
+	<distributionManagement>
+		<repository>
+			<id>bintray</id>
+			<url>https://api.bintray.com/maven/marytts/marytts/emotionml-checker-java</url>
+		</repository>
+	</distributionManagement>
+
 	<scm>
 		<url>https://github.com/marc1s/emotionml-checker-java</url>
 		<connection>scm:git:https://github.com/marc1s/emotionml-checker-java.git</connection>
