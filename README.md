@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'de.dfki.mary', name: 'emotionml-checker-java', version: '1.2-SNAPSHOT'
+    implementation group: 'de.dfki.mary', name: 'emotionml-checker-java', version: '1.2'
 }
 ```
 
@@ -47,7 +47,7 @@ Then, add this to your `pom.xml`:
 <dependency>
     <groupId>de.dfki.mary</groupId>
     <artifactId>emotionml-checker-java</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
 </dependency>
 ```
 
