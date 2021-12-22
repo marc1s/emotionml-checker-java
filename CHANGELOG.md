@@ -7,6 +7,7 @@ emotionml-checker-java Changelog
 ### Changes
 
 - Migrated build tooling to Gradle
+- Migrated CI/CD to GitHub Actions/Packages
 
 [v1.1] (2014-07-04)
 -------------------

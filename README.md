@@ -5,6 +5,52 @@ emotionml-checker-java
 
 A generic implementation of EmotionML checks, in Java.
 
+Dependency resolution
+---------------------
+
+Ensure you have a valid GitHub personal access token with `read:packages` scope.
+
+### Gradle
+
+Configure your GitHub usename and token as Gradle properties `GitHubPackagesUsername` and `GitHubPackagesPassword`, respectively.
+
+Then, add this to your `build.gradle`:
+
+```gradle
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name 'GitHubPackages'
+                url 'https://maven.pkg.github.com/marytts/emotionml-checker-java'
+                credentials PasswordCredentials
+            }
+        }
+        filter {
+            includeModule 'de.dfki.mary', 'emotionml-checker-java'
+        }
+    }
+}
+
+dependencies {
+    implementation group: 'de.dfki.mary', name: 'emotionml-checker-java', version: '1.2-SNAPSHOT'
+}
+```
+
+### Maven
+
+Configure your Maven `settings.xml` to [authenticate to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry).
+
+Then, add this to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>de.dfki.mary</groupId>
+    <artifactId>emotionml-checker-java</artifactId>
+    <version>1.2-SNAPSHOT</version>
+</dependency>
+```
+
 Building
 --------
 
@@ -30,18 +76,24 @@ Key APIs to use from Java code are the following.
 
 To verify that a given XML document is valid EmotionML:
 
-      new Checker().parse(InputStream)
-      new Checker().validate(Document)
-      new Checker().validateFragment(DocumentFragment)
-    
+```java
+new Checker().parse(InputStream);
+new Checker().validate(Document);
+new Checker().validateFragment(DocumentFragment);
+```
+
 To obtain a certain Emotion Vocabulary:
 
-    EmotionVocabulary.get(String vocabularyUriWithId)
+```java
+EmotionVocabulary.get(String vocabularyUriWithId);
+```
 
 To inquire about properties of an Emotion Vocabulary:
 
-    vocabulary.getType()
-    vocabulary.getItems()
+```java
+vocabulary.getType()
+vocabulary.getItems()
+```
 
 License
 -------
