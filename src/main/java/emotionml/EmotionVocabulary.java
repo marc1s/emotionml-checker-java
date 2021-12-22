@@ -48,6 +48,7 @@ public class EmotionVocabulary {
 	 * Obtain an EmotionVocabulary object representing the emotion vocabulary defined at the given vocabularyURL.
 	 * @param vocabularyURL the exact URL of the vocabulary, including the fragment identifier, e.g. <code>http://www.w3.org/TR/emotion-voc/xml#big6</code>.
 	 * @throws NoSuchVocabularyException if there is no emotion vocabulary defined at the given URL
+	 * @return a new EmotionVocabulary
 	 */
 	public static EmotionVocabulary get(String vocabularyURL) throws NoSuchVocabularyException {
 		return new EmotionVocabulary(vocabularyURL, true);

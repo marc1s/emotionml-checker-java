@@ -1,0 +1,65 @@
+plugins {
+    id 'java-library'
+    id 'application'
+    id 'maven-publish'
+}
+
+group 'de.dfki.mary'
+version '1.2-SNAPSHOT'
+description 'A generic implementation of EmotionML checks, in Java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testCompileOnly 'junit:junit:4.13'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'emotionml.Main'
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': application.mainClass)
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = project.name
+                description = project.description
+                licenses {
+                    license {
+                        name = 'Creative Commons Zero v1.0 Universal'
+                        url = 'https://spdx.org/licenses/CC0-1.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'marc1s'
+                        name = 'Marc Schröder'
+                    }
+                }
+            }
+        }
+    }
+}
