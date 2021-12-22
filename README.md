@@ -1,7 +1,7 @@
 emotionml-checker-java
 ======================
 
-[![Build Status](https://buildhive.cloudbees.com/job/marc1s/job/emotionml-checker-java/badge/icon)](https://buildhive.cloudbees.com/job/marc1s/job/emotionml-checker-java/)
+[![CI](https://github.com/marytts/emotionml-checker-java/actions/workflows/main.yml/badge.svg)](https://github.com/marytts/emotionml-checker-java/actions/workflows/main.yml)
 
 A generic implementation of EmotionML checks, in Java.
 
