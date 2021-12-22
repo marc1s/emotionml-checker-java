@@ -2,15 +2,11 @@
 .gradle/
 build/
 
+# IDEA
+.idea/
+*.iml
+
 # Eclipse
 .project
 .classpath
 .settings/
-
-*.class
-target
-
-# Package Files #
-*.jar
-*.war
-*.ear
