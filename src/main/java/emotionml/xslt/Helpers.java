@@ -64,7 +64,7 @@ public class Helpers {
 
 	/**
 	 * Determine whether the given emotion element is expressed through the given modality.
-	 * @param emotion emotion element in question
+	 * @param emotionNode emotion element in question
 	 * @param modality name of a single modality
 	 * @param defaultValue whether to assume no expressed-through attribute means that the result should be 'true'.
 	 * @return true if the given modality is one of the values in the 'expressed-through' attributes of emotion;
