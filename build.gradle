@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'application'
 }
 
 group 'de.dfki.mary'
@@ -23,4 +24,14 @@ java {
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass = 'emotionml.Main'
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': application.mainClass)
+    }
 }
